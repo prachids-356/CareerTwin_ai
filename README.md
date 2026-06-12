@@ -14,22 +14,28 @@ To maximize portability, performance, and cross-platform compatibility, all mach
 
 ---
 
+## 🔗 LeetCode & Study Guide Integration
+* **Targeted LeetCode Study Guides:** The Resource Hub seeds direct URLs to verified **LeetCode Discuss Study Guides** for core data structures and algorithms (e.g., LeetCode Array Patterns, Binary Search Tree Operations, HashMap/HashSet cheat sheets).
+* **AI Coach Walkthroughs:** The AI Mentor Coach detects student struggle cues and provides custom step-by-step code execution walkthroughs of classical LeetCode problems when in "Example-Oriented" learning mode.
+
+---
+
 ## 🏗️ System Architecture
 
 ```mermaid
 graph TD
-    A[React Frontend] -->|1. Fetch profile/settings/logs| B[Express Node Backend]
-    A -->|2. Send chat messages / struggles| B
-    B -->|3. Query ML models with student logs| C[Python ML Server]
+    A["React Frontend (Vite)"] -->| "1. Fetch profile / settings / logs" | B["Express Node.js Backend"]
+    A -->| "2. Send chat interactions / struggles" | B
+    B -->| "3. Query ML models with student logs" | C["Python ML Server"]
     
-    subgraph Python ML Engine (Pure Python implementations)
-        C --> D[Random Forest Regressor]
-        C --> E[Ebbinghaus Forgetting Curve Engine]
-        C --> F[Vector DB Memory Retriever]
-        C --> G[K-Means Clustering Engine]
+    subgraph "Python ML Engine (Pure Python Core)"
+        C --> D["Random Forest Regressor (Mastery prediction)"]
+        C --> E["Ebbinghaus Forgetting Curve (Cognitive decay ranking)"]
+        C --> F["Vector DB Memory Retriever (Cosine struggle matching)"]
+        C --> G["K-Means Clustering Engine (Learning style assignment)"]
     end
     
-    B -->|4. Read/Write local records| H[JSON Mock DB Volume]
+    B -->| "4. Read / Write local records" | H["Local Mock Database (JSON Volume)"]
 ```
 
 ---
