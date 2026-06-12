@@ -1,0 +1,35 @@
+services:
+  # 1. Python ML Engine Web Service
+  - type: web
+    name: careertwin-ml-engine
+    env: python
+    buildCommand: ""
+    startCommand: "python ml_server.py"
+    rootDir: ml-engine
+    envVars:
+      - key: PORT
+        value: 5005
+
+  # 2. Node.js Express Backend & Frontend static host
+  - type: web
+    name: careertwin-backend
+    env: node
+    buildCommand: "npm install && cd ../frontend && npm install && npm run build"
+    startCommand: "npm start"
+    rootDir: backend
+    disk:
+      name: careertwin-db-volume
+      mountPath: /opt/careertwin/data
+      sizeGB: 1
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: DATA_DIR
+        value: /opt/careertwin/data
+      - key: ML_URL
+        fromService:
+          type: web
+          name: careertwin-ml-engine
+          property: host
+      - key: GEMINI_API_KEY
+        sync: false # Render dashboard will prompt you to enter your API key privately

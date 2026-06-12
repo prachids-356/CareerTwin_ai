@@ -1,8 +1,15 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import db from './db/database.js';
 import { seedDatabase } from './db/seed_data.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendDistPath = path.join(__dirname, '..', '..', 'frontend', 'dist');
 
 import trackerRoutes from './routes/tracker.js';
 import recommendRoutes from './routes/recommend.js';
@@ -78,6 +85,21 @@ app.post('/api/user/settings', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// Serve static assets from frontend build if it exists
+if (fs.existsSync(frontendDistPath)) {
+  console.log(`Serving static frontend assets from: ${frontendDistPath}`);
+  app.use(express.static(frontendDistPath));
+  
+  // Wildcard fallback to serve index.html (client-side routing support)
+  app.get('*', (req, res, next) => {
+    // Only intercept requests that don't start with /api
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+  });
+}
 
 // Start server after seeding DB
 seedDatabase().then(() => {
