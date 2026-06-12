@@ -213,3 +213,95 @@ body {
   color: var(--primary);
   box-shadow: inset 0 0 8px rgba(0, 242, 254, 0.05);
 }
+
+/* Evaluation Hub Custom Styles */
+.eval-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+@media (max-width: 768px) {
+  .eval-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.eval-metric-card {
+  background: linear-gradient(135deg, rgba(17, 22, 34, 0.85) 0%, rgba(26, 32, 49, 0.75) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.eval-metric-card:hover {
+  border-color: rgba(0, 242, 254, 0.3);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.1);
+  transform: translateY(-2px);
+}
+
+.eval-metric-value {
+  font-size: 38px;
+  font-weight: 700;
+  margin: 10px 0;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.5px;
+}
+
+.model-spec-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .model-spec-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.model-spec-card {
+  background: rgba(17, 22, 34, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.model-spec-card:hover {
+  border-color: rgba(189, 0, 255, 0.25);
+  box-shadow: 0 0 15px rgba(189, 0, 255, 0.05);
+}
+
+.coach-insight-hud {
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: 10px;
+  background: rgba(8, 11, 16, 0.6);
+  border: 1px solid rgba(0, 242, 254, 0.15);
+  font-size: 13px;
+  color: #f1f5f9;
+  position: relative;
+  box-shadow: inset 0 0 15px rgba(0, 242, 254, 0.05);
+  animation: pulse-glow 3s infinite;
+}
+
+.revision-indicator {
+  background: rgba(255, 179, 0, 0.05);
+  border: 1px solid rgba(255, 179, 0, 0.2);
+  color: var(--warning);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+

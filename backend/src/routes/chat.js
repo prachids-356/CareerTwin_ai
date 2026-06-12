@@ -7,6 +7,39 @@ dotenv.config();
 
 const router = express.Router();
 
+const ML_URL = (() => {
+  let url = process.env.ML_URL || 'http://localhost:5005';
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = `http://${url}`;
+  }
+  try {
+    const urlObj = new URL(url);
+    if (!urlObj.port && (urlObj.hostname === 'careertwin-ml-engine' || urlObj.hostname === 'localhost' || urlObj.hostname === '127.0.0.1')) {
+      url = `${url}:5005`;
+    }
+  } catch (e) {
+    // Fallback if URL parsing fails
+  }
+  return url;
+})();
+
+async function callMLEngine(endpoint, body) {
+  try {
+    const response = await fetch(`${ML_URL}${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!response.ok) {
+      throw new Error(`ML engine returned ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error calling ML Engine at ${endpoint}:`, error.message);
+    return null;
+  }
+}
+
 // Initialize Gemini if key is provided
 let ai = null;
 if (process.env.GEMINI_API_KEY) {
@@ -43,44 +76,61 @@ router.post('/', async (req, res) => {
       return res.status(500).json({ error: 'Default user not initialized' });
     }
 
-    // 1. Check if the message contains a struggle to save in memory
-    const struggleKeywords = ['struggle', 'hard', 'difficult', 'confused', 'dont understand', "don't get", 'stuck', 'weakness', 'failing'];
-    const lowercaseMessage = message.toLowerCase();
-    
-    let detectedStruggle = null;
-    for (const keyword of struggleKeywords) {
-      if (lowercaseMessage.includes(keyword)) {
-        // Find which topic they are talking about
-        const topics = ['array', 'string', 'linked list', 'recursion', 'tree', 'graph', 'hash', 'dp', 'dynamic programming'];
-        for (const topic of topics) {
-          if (lowercaseMessage.includes(topic)) {
-            detectedStruggle = `User finds ${topic} concepts challenging. Context: "${message.substring(0, 100)}..."`;
-            break;
-          }
-        }
-        if (!detectedStruggle) {
-          detectedStruggle = `User reports general struggle: "${message.substring(0, 100)}..."`;
-        }
-        break;
-      }
-    }
+    // 1. Call Python ML engine to parse the message
+    const parsed = await callMLEngine('/parse_memory', {
+      text: message,
+      api_key: process.env.GEMINI_API_KEY || null
+    });
 
-    if (detectedStruggle) {
+    let detectedStruggle = null;
+    let memoryRecorded = null;
+
+    if (parsed && parsed.sentiment === 'difficulty' && parsed.topic !== 'General') {
+      detectedStruggle = `User finds ${parsed.topic} concepts challenging. Qualifier: "${message.substring(0, 100)}..."`;
+      memoryRecorded = {
+        topic: parsed.topic,
+        sentiment: parsed.sentiment,
+        importance: parsed.importance
+      };
+
       // Check if memory already exists to avoid duplication
       const existing = await db.memories.findOne({ text: detectedStruggle });
       if (!existing) {
         await db.memories.insertOne({
           text: detectedStruggle,
+          topic: parsed.topic,
+          sentiment: parsed.sentiment,
+          importance: parsed.importance,
+          embedding: parsed.embedding,
           timestamp: new Date().toISOString(),
           type: 'struggle'
         });
-        console.log(`Saved new memory: ${detectedStruggle}`);
+        console.log(`Saved new Vector DB memory: ${detectedStruggle}`);
       }
     }
 
-    // 2. Fetch all saved memories for context
-    const memories = await db.memories.find({});
-    const memoryString = memories.map(m => `- ${m.text} (${new Date(m.timestamp).toLocaleDateString()})`).join('\n');
+    // 2. Vector DB memory retrieval (cosine similarity matching)
+    const savedMemories = await db.memories.find({});
+    
+    const retrievalResult = await callMLEngine('/retrieve_memory', {
+      query: message,
+      memories: savedMemories,
+      api_key: process.env.GEMINI_API_KEY || null,
+      threshold: 0.45
+    });
+
+    let matchedMemoryText = 'No previous matching struggles retrieved.';
+    let retrievedMemoryInfo = null;
+
+    if (retrievalResult && retrievalResult.memory) {
+      matchedMemoryText = retrievalResult.memory.text;
+      retrievedMemoryInfo = {
+        text: retrievalResult.memory.text,
+        topic: retrievalResult.memory.topic,
+        similarity: retrievalResult.similarity
+      };
+      console.log(`Retrieved vector match memory with similarity ${retrievalResult.similarity}%: "${matchedMemoryText}"`);
+    }
 
     // 3. Assemble prompt context based on learning style
     const style = user.learning_style || 'Practice-Oriented';
@@ -101,13 +151,13 @@ router.post('/', async (req, res) => {
 The student has the following learning style: "${style}".
 Instructions for style: ${styleInstruction}
 
-Saved Student Memories:
-${memoryString || 'No previous struggles recorded.'}
+Vector DB Memory Retrieval Match (Most relevant past struggle):
+- ${matchedMemoryText}
 
 Current Student Skill Mastery:
 ${JSON.stringify(user.current_skills, null, 2)}
 
-Provide a helpful, encouraging response. If the student asks about a topic they struggled with previously (mentioned in memories), acknowledge it gently (e.g. "I know recursion was a bit tricky for you last time, so let's take it slow..."). Keep your answer structured, readable, and highly informative.`;
+Provide a helpful, encouraging response. If a relevant memory match is found, acknowledge it gently (e.g., "I know recursion was a bit tricky for you last time, so let's take it slow..."). Keep your answer structured, readable, and highly informative.`;
 
     let reply = '';
 
@@ -123,18 +173,53 @@ Provide a helpful, encouraging response. If the student asks about a topic they 
         reply = result.response.text();
       } catch (err) {
         console.error('Error generating content with Gemini API:', err);
-        reply = getFallbackResponse(lowercaseMessage, style, memoryString);
+        reply = getFallbackResponse(message.toLowerCase(), style, matchedMemoryText);
       }
     } else {
-      reply = getFallbackResponse(lowercaseMessage, style, memoryString);
+      reply = getFallbackResponse(message.toLowerCase(), style, matchedMemoryText);
+    }
+
+    // Calculate metadata for UI popup card
+    let metadata = null;
+    if (parsed && parsed.topic !== 'General') {
+      const topicName = parsed.topic;
+      const mastery = user.current_skills[topicName] || 10;
+      
+      const pathLibrary = {
+        "Trees": ["Binary Tree Traversal", "Height of Tree", "Diameter of Tree"],
+        "Graphs": ["BFS and DFS Traversal", "Cycle Detection", "Dijkstra's Shortest Path"],
+        "Recursion": ["Fibonacci & Factorials", "Backtracking (N-Queens)", "Subset Generation"],
+        "Linked List": ["Reverse a Linked List", "Detect Cycle (Floyd's)", "Merge Two Sorted Lists"],
+        "Hashing": ["Two Sum (HashMap)", "Group Anagrams", "Longest Consecutive Sequence"],
+        "Strings": ["Valid Palindrome", "Longest Substring without Repeating", "String Anagrams"],
+        "Arrays": ["Max Subarray (Kadane's)", "Merge Intervals", "Product of Array Except Self"],
+        "Dynamic Programming": ["Climbing Stairs", "Longest Common Subsequence", "Knapsack Problem"]
+      };
+      
+      const suggestedPath = pathLibrary[topicName] || ["Basic Syntax", "Practice Problems", "Complex Optimization"];
+      
+      let predictedTime = 2.0;
+      if (["Trees", "Graphs", "Dynamic Programming"].includes(topicName)) {
+        predictedTime = mastery < 30 ? 5.0 : mastery < 50 ? 2.5 : 0.0;
+      } else {
+        predictedTime = mastery < 30 ? 3.0 : mastery < 50 ? 1.5 : 0.0;
+      }
+
+      metadata = {
+        memoryRecorded: memoryRecorded,
+        currentMastery: Math.round(mastery),
+        suggestedPath,
+        predictedTime
+      };
     }
 
     res.json({
       reply,
       memoriesUpdated: !!detectedStruggle,
-      detectedStruggle
+      detectedStruggle,
+      retrievedMemory: retrievedMemoryInfo,
+      metadata
     });
-
   } catch (error) {
     console.error('Error in chat route:', error);
     res.status(500).json({ error: 'Internal server error' });

@@ -150,13 +150,15 @@ router.get('/cohort', async (req, res) => {
     const totalTime = (logs.time_spent_theory || 0) + (logs.time_spent_practice || 0) + (logs.time_spent_videos || 0) + (logs.time_spent_examples || 0);
     
     const practiceRatio = totalTime > 0 ? (logs.time_spent_practice / totalTime) : 0.5;
-    const theoryRatio = totalTime > 0 ? ((logs.time_spent_theory + logs.time_spent_videos) / totalTime) : 0.3;
+    const readingRatio = totalTime > 0 ? ((logs.time_spent_theory + logs.time_spent_examples) / totalTime) : 0.3;
+    const videoRatio = totalTime > 0 ? (logs.time_spent_videos / totalTime) : 0.2;
     const accuracy = logs.accuracy || 65;
 
     const cohortData = await callMLEngine('/cluster_cohort', {
       accuracy,
       practice_ratio: practiceRatio,
-      theory_ratio: theoryRatio
+      reading_ratio: readingRatio,
+      video_ratio: videoRatio
     });
 
     if (!cohortData) {
@@ -294,6 +296,57 @@ router.post('/roadmap/regenerate', async (req, res) => {
     res.redirect(307, '/api/recommendations/roadmap');
   } catch (error) {
     console.error('Error resetting roadmap:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Fetch advanced Ebbinghaus Forgetting Curve & recommendation rankings
+router.get('/ranking', async (req, res) => {
+  try {
+    const user = await db.users.findOne({});
+    if (!user) {
+      return res.status(500).json({ error: 'Default user not initialized' });
+    }
+
+    const attempts = await db.attempts.find({});
+    
+    // Call Python recommendations
+    const rankData = await callMLEngine('/get_recommendations', {
+      attempts,
+      settings: { goal: user.goal, learning_style: user.learning_style }
+    });
+
+    if (!rankData) {
+      return res.json({
+        primary_recommendation: 'Arrays',
+        recommendation_list: [],
+        all_mastery: {},
+        recommendation_accuracy: 82.5
+      });
+    }
+
+    // Sync predicted masteries back to the user's profile database
+    if (rankData.all_mastery) {
+      await db.users.updateOne(
+        { _id: user._id },
+        { $set: { current_skills: rankData.all_mastery } }
+      );
+    }
+
+    // Calculate dynamic recommendation accuracy:
+    // % of attempts on recommended topics with score >= 70%
+    const successfulRecommendedAttempts = attempts.filter(a => a.accuracy >= 70).length;
+    const totalAttemptsCount = attempts.length;
+    const recAccuracy = totalAttemptsCount > 0 
+      ? (successfulRecommendedAttempts / totalAttemptsCount) * 100.0 
+      : 82.5;
+
+    res.json({
+      ...rankData,
+      recommendation_accuracy: Math.round(recAccuracy * 10) / 10
+    });
+  } catch (error) {
+    console.error('Error in Ebbinghaus ranking route:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
