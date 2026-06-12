@@ -1,0 +1,191 @@
+[
+  {
+    "_id": "7sv4ybzst",
+    "createdAt": "2026-06-12T14:31:07.526Z",
+    "topic": "Arrays",
+    "title": "Arrays & Dynamic Arrays Crash Course",
+    "type": "video",
+    "quality": 9,
+    "url": "https://www.youtube.com/watch?v=ArraysCrashCourse"
+  },
+  {
+    "_id": "zekaeoxfn",
+    "createdAt": "2026-06-12T14:31:07.526Z",
+    "topic": "Arrays",
+    "title": "LeetCode Array Patterns & Cheat Sheet",
+    "type": "notes",
+    "quality": 8,
+    "url": "https://leetcode.com/discuss/study-guide/arrays"
+  },
+  {
+    "_id": "2ai9kqi97",
+    "createdAt": "2026-06-12T14:31:07.527Z",
+    "topic": "Arrays",
+    "title": "Sliding Window Algorithm Explained",
+    "type": "blog",
+    "quality": 9,
+    "url": "https://medium.com/algorithms/sliding-window"
+  },
+  {
+    "_id": "l8153ru7b",
+    "createdAt": "2026-06-12T14:31:07.527Z",
+    "topic": "Arrays",
+    "title": "Two-Pointer Technique Guide",
+    "type": "blog",
+    "quality": 7,
+    "url": "https://dev.to/twopointers"
+  },
+  {
+    "_id": "8f9rnc16m",
+    "createdAt": "2026-06-12T14:31:07.527Z",
+    "topic": "Linked List",
+    "title": "Linked Lists in 10 Minutes",
+    "type": "video",
+    "quality": 8,
+    "url": "https://www.youtube.com/watch?v=LinkedListsIntro"
+  },
+  {
+    "_id": "u8jxny6xd",
+    "createdAt": "2026-06-12T14:31:07.527Z",
+    "topic": "Linked List",
+    "title": "Understanding Pointers and Node Links",
+    "type": "notes",
+    "quality": 7,
+    "url": "https://geeksforgeeks.org/linked-list-pointers"
+  },
+  {
+    "_id": "2crcoy2gt",
+    "createdAt": "2026-06-12T14:31:07.527Z",
+    "topic": "Linked List",
+    "title": "How to Reverse a Linked List (Visualized)",
+    "type": "blog",
+    "quality": 9,
+    "url": "https://dev.to/reverselinkedlist"
+  },
+  {
+    "_id": "42ldg96if",
+    "createdAt": "2026-06-12T14:31:07.528Z",
+    "topic": "Recursion",
+    "title": "Recursion for Beginners - Recursion Tree Method",
+    "type": "video",
+    "quality": 9,
+    "url": "https://www.youtube.com/watch?v=RecursionBeginners"
+  },
+  {
+    "_id": "waa7xc6yp",
+    "createdAt": "2026-06-12T14:31:07.528Z",
+    "topic": "Recursion",
+    "title": "Thinking Recursively: Step by Step Guide",
+    "type": "blog",
+    "quality": 8,
+    "url": "https://medium.com/recursion-guide"
+  },
+  {
+    "_id": "clvf5x1c2",
+    "createdAt": "2026-06-12T14:31:07.528Z",
+    "topic": "Recursion",
+    "title": "Recursion vs Iteration Cheat Sheet",
+    "type": "notes",
+    "quality": 7,
+    "url": "https://geeksforgeeks.org/recursion-notes"
+  },
+  {
+    "_id": "778fubcdv",
+    "createdAt": "2026-06-12T14:31:07.528Z",
+    "topic": "Trees",
+    "title": "Binary Trees & Traversals Complete Guide",
+    "type": "video",
+    "quality": 9,
+    "url": "https://www.youtube.com/watch?v=BinaryTreesComplete"
+  },
+  {
+    "_id": "p4buga950",
+    "createdAt": "2026-06-12T14:31:07.529Z",
+    "topic": "Trees",
+    "title": "Binary Search Tree Operations and Complexity",
+    "type": "notes",
+    "quality": 8,
+    "url": "https://leetcode.com/discuss/study-guide/trees"
+  },
+  {
+    "_id": "cis3vz89q",
+    "createdAt": "2026-06-12T14:31:07.529Z",
+    "topic": "Trees",
+    "title": "Level Order Traversal and BFS on Trees",
+    "type": "blog",
+    "quality": 9,
+    "url": "https://dev.to/levelordertraversal"
+  },
+  {
+    "_id": "ardacxaod",
+    "createdAt": "2026-06-12T14:31:07.529Z",
+    "topic": "Graphs",
+    "title": "Graph Theory Algorithms Course",
+    "type": "video",
+    "quality": 10,
+    "url": "https://www.youtube.com/watch?v=GraphTheory"
+  },
+  {
+    "_id": "teh15jbvt",
+    "createdAt": "2026-06-12T14:31:07.529Z",
+    "topic": "Graphs",
+    "title": "DFS vs BFS: Core Graph Implementations",
+    "type": "notes",
+    "quality": 8,
+    "url": "https://geeksforgeeks.org/dfs-bfs"
+  },
+  {
+    "_id": "9u9gls6zi",
+    "createdAt": "2026-06-12T14:31:07.529Z",
+    "topic": "Graphs",
+    "title": "Dijkstra's Shortest Path Algorithm Explained",
+    "type": "blog",
+    "quality": 9,
+    "url": "https://medium.com/graphs/dijkstras-algorithm"
+  },
+  {
+    "_id": "ezey9zl26",
+    "createdAt": "2026-06-12T14:31:07.530Z",
+    "topic": "Hashing",
+    "title": "Hash Table Internals & Collision Resolution",
+    "type": "video",
+    "quality": 8,
+    "url": "https://www.youtube.com/watch?v=HashingInternals"
+  },
+  {
+    "_id": "xynmkd1cx",
+    "createdAt": "2026-06-12T14:31:07.530Z",
+    "topic": "Hashing",
+    "title": "HashMap / HashSet Cheat Sheet",
+    "type": "notes",
+    "quality": 9,
+    "url": "https://leetcode.com/discuss/study-guide/hashing"
+  },
+  {
+    "_id": "afbtlaoyo",
+    "createdAt": "2026-06-12T14:31:07.530Z",
+    "topic": "Dynamic Programming",
+    "title": "Dynamic Programming Demystified",
+    "type": "video",
+    "quality": 10,
+    "url": "https://www.youtube.com/watch?v=DPMystified"
+  },
+  {
+    "_id": "vu6p2zayn",
+    "createdAt": "2026-06-12T14:31:07.530Z",
+    "topic": "Dynamic Programming",
+    "title": "0/1 Knapsack Problem Master Class",
+    "type": "blog",
+    "quality": 9,
+    "url": "https://medium.com/dp/knapsack"
+  },
+  {
+    "_id": "o4955k66g",
+    "createdAt": "2026-06-12T14:31:07.530Z",
+    "topic": "Dynamic Programming",
+    "title": "Top-Down Memoization vs Bottom-Up Tabulation",
+    "type": "notes",
+    "quality": 8,
+    "url": "https://geeksforgeeks.org/dp-memoization"
+  }
+]

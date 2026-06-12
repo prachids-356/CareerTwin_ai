@@ -1,0 +1,76 @@
+[
+  {
+    "_id": "zpyk2egvz",
+    "createdAt": "2026-06-12T14:52:19.312Z",
+    "userId": "y0jzbrm2c",
+    "goal": "Fullstack Developer",
+    "target_months": "3",
+    "timeline": [
+      {
+        "week": 1,
+        "topic": "Arrays",
+        "duration": "Week 1-2",
+        "status": "Completed",
+        "mastery": 79,
+        "focusDescription": "Maintain and practice hard problems"
+      },
+      {
+        "week": 2,
+        "topic": "Strings",
+        "duration": "Week 3",
+        "status": "In Progress",
+        "mastery": 55,
+        "focusDescription": "Strengthen core concepts and practice coding challenges"
+      },
+      {
+        "week": 3,
+        "topic": "Hashing",
+        "duration": "Week 4",
+        "status": "In Progress",
+        "mastery": 30,
+        "focusDescription": "Strengthen core concepts and practice coding challenges"
+      },
+      {
+        "week": 4,
+        "topic": "Linked List",
+        "duration": "Week 5-6",
+        "status": "In Progress",
+        "mastery": 30,
+        "focusDescription": "Strengthen core concepts and practice coding challenges"
+      },
+      {
+        "week": 5,
+        "topic": "Recursion",
+        "duration": "Week 7-8",
+        "status": "Not Started",
+        "mastery": 25,
+        "focusDescription": "Strengthen core concepts and practice coding challenges"
+      },
+      {
+        "week": 6,
+        "topic": "Trees",
+        "duration": "Week 9-10",
+        "status": "Not Started",
+        "mastery": 10,
+        "focusDescription": "Strengthen core concepts and practice coding challenges"
+      },
+      {
+        "week": 7,
+        "topic": "Graphs",
+        "duration": "Week 11",
+        "status": "Not Started",
+        "mastery": 0,
+        "focusDescription": "Strengthen core concepts and practice coding challenges"
+      },
+      {
+        "week": 8,
+        "topic": "Dynamic Programming",
+        "duration": "Week 12",
+        "status": "Not Started",
+        "mastery": 0,
+        "focusDescription": "Strengthen core concepts and practice coding challenges"
+      }
+    ],
+    "updatedAt": "2026-06-12T14:58:06.637Z"
+  }
+]

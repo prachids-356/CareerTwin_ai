@@ -1,0 +1,55 @@
+[
+  {
+    "_id": "y0jzbrm2c",
+    "createdAt": "2026-06-12T14:31:07.533Z",
+    "username": "CareerTwin_Learner",
+    "goal": "Fullstack Developer",
+    "target_months": "3",
+    "learning_style": "Practice-Oriented",
+    "current_skills": {
+      "Arrays": 79,
+      "Strings": 55,
+      "Linked List": 30,
+      "Hashing": 30,
+      "Recursion": 25,
+      "Trees": 10,
+      "Graphs": 0,
+      "Dynamic Programming": 0
+    },
+    "learning_logs": {
+      "time_spent_theory": 1808,
+      "time_spent_practice": 7800,
+      "time_spent_videos": 2400,
+      "time_spent_examples": 1200,
+      "accuracy": 72
+    },
+    "style_distribution": {
+      "Practice-Oriented": 65.3,
+      "Theory-Oriented": 11.6,
+      "Video-Oriented": 11.8,
+      "Example-Oriented": 11.3
+    },
+    "active_weak_areas": [
+      {
+        "topic": "Strings",
+        "mastery": 55,
+        "reason": "Low accuracy/performance"
+      },
+      {
+        "topic": "Linked List",
+        "mastery": 30,
+        "reason": "Low accuracy/performance"
+      }
+    ],
+    "predicted_gaps": [
+      {
+        "topic": "Trees",
+        "reason": "Prerequisite 'Linked List' is weak (30%)",
+        "source_weakness": "Linked List"
+      }
+    ],
+    "updatedAt": "2026-06-12T14:58:06.649Z",
+    "cohort_id": 2,
+    "cohort_name": "Balanced Example Builders"
+  }
+]
