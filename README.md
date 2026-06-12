@@ -15,7 +15,10 @@ To maximize portability, performance, and cross-platform compatibility, all mach
 ---
 
 ## 🔗 LeetCode & Study Guide Integration
-* **Targeted LeetCode Study Guides:** The Resource Hub seeds direct URLs to verified **LeetCode Discuss Study Guides** for core data structures and algorithms (e.g., LeetCode Array Patterns, Binary Search Tree Operations, HashMap/HashSet cheat sheets).
+* **Targeted LeetCode Study Guides:** The Resource Hub seeds direct URLs to verified **LeetCode Discuss Study Guides** for core data structures and algorithms, including:
+  * [LeetCode Array Patterns & Cheat Sheet](https://leetcode.com/discuss/study-guide/arrays)
+  * [Binary Search Tree Operations and Complexity](https://leetcode.com/discuss/study-guide/trees)
+  * [HashMap / HashSet Cheat Sheet](https://leetcode.com/discuss/study-guide/hashing)
 * **AI Coach Walkthroughs:** The AI Mentor Coach detects student struggle cues and provides custom step-by-step code execution walkthroughs of classical LeetCode problems when in "Example-Oriented" learning mode.
 
 ---
