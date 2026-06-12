@@ -22,20 +22,52 @@ To maximize portability, performance, and cross-platform compatibility, all mach
 
 ## 🏗️ System Architecture
 
+Here is the data flow and service architecture of CareerTwin AI:
+
+### Service Data Flow (Universal Text Format)
+```text
+ +---------------------------------------+
+ |         React Frontend (Vite)         |
+ +------------------+--------------------+
+                    |  ^
+   1. Fetch profile |  | 2. Send chat struggles
+   & activity logs  |  | & interactions
+                    v  |
+ +------------------+--------------------+
+ |       Express Node.js Backend         |<--------+
+ +------------------+--------------------+         |
+                    |                              | 4. Read/Write
+                    | 3. Query ML models           |    mock records
+                    v                              v
+ +------------------+--------------------+   +-----+------------+
+ |     Python ML Server (Port 5005)      |   |  Local Database  |
+ +------------------+--------------------+   |  (JSON Volume)   |
+                    |                        +------------------+
+     +--------------+--------------+
+     | Pure Python Implementations |
+     +--------------+--------------+
+     |-- Random Forest Regressor   |
+     |-- Ebbinghaus Curve Decay    |
+     |-- Vector DB Memory Matcher  |
+     |-- K-Means Clusterer         |
+     +-----------------------------+
+```
+
+### Dependency Diagram (Mermaid Format)
 ```mermaid
 graph TD
-    A["React Frontend (Vite)"] -->| "1. Fetch profile / settings / logs" | B["Express Node.js Backend"]
-    A -->| "2. Send chat interactions / struggles" | B
-    B -->| "3. Query ML models with student logs" | C["Python ML Server"]
+    A["React Frontend (Vite)"] -->| "1. Fetch profile & logs" | B["Express Node.js Backend"]
+    A -->| "2. Send chat struggles & interactions" | B
+    B -->| "3. Query ML models" | C["Python ML Server (Port 5005)"]
     
-    subgraph "Python ML Engine (Pure Python Core)"
-        C --> D["Random Forest Regressor (Mastery prediction)"]
-        C --> E["Ebbinghaus Forgetting Curve (Cognitive decay ranking)"]
-        C --> F["Vector DB Memory Retriever (Cosine struggle matching)"]
-        C --> G["K-Means Clustering Engine (Learning style assignment)"]
+    subgraph "Python ML Engine"
+        C --> D["Random Forest Regressor"]
+        C --> E["Ebbinghaus Forgetting Curve"]
+        C --> F["Vector DB Memory Retriever"]
+        C --> G["K-Means Clusterer"]
     end
     
-    B -->| "4. Read / Write local records" | H["Local Mock Database (JSON Volume)"]
+    B -->| "4. Read & Write records" | H[("JSON Local DB")]
 ```
 
 ---
