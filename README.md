@@ -34,31 +34,31 @@ graph TD
 
 ---
 
-## 📈 ML/DL System Details & Resume Bullet Points
+## 🧠 Machine Learning & Algorithmic Core
 
-If you are adding this project to your resume, here are high-impact descriptions of the core systems:
+The platform coordinates multiple specialized machine learning models and algorithms to personalize the learning path:
 
 * **Ensemble Random Forest Regressor (Skill Prediction):**
-  * Built a custom Decision Tree and Random Forest Regressor ($N=8$ estimators, Max Depth: 5) in pure Python to predict student topic mastery `[0-100]`.
-  * Modeled student skill progression based on multi-variate features: `[TopicIndex, AttemptCount, AverageAccuracy, TotalTimeSpent, QuestionDifficulty]`, penalizing speed bottlenecks and rewarding hard question completions.
+  * Predicts student topic mastery `[0-100]` by fitting a custom Random Forest Regressor ($N=8$ estimators, Max Depth: 5) dynamically trained on student attempts.
+  * Models skill progression based on multi-variate features: `[TopicIndex, AttemptCount, AverageAccuracy, TotalTimeSpent, QuestionDifficulty]`, penalizing speed bottlenecks and rewarding hard question completions.
 
 * **Cognitive Decay Recommendation Engine (Ebbinghaus Forgetting Curve):**
-  * Integrated the **Ebbinghaus Forgetting Curve** model ($R = 100 \cdot e^{-t/S}$) to track topic retention decay over hours ($t$) since last attempt.
-  * Formulated a dynamic Memory Strength parameter ($S$) scaled by attempts and accuracy.
-  * Created a priority ranking score combining weakness, memory decay, and elapsed hours, applying prerequisite penalties to block advanced topics (e.g., Graphs) until core concepts (e.g., Trees) are mastered (&ge; 68%).
+  * Integrates the **Ebbinghaus Forgetting Curve** model ($R = 100 \cdot e^{-t/S}$) to track topic retention decay over hours ($t$) since the last attempt.
+  * Formulates a dynamic Memory Strength parameter ($S$) scaled by attempts and accuracy.
+  * Creates a priority ranking score combining weakness, memory decay, and elapsed hours, applying prerequisite penalties to block advanced topics (e.g., Graphs) until core concepts (e.g., Trees) are mastered (&ge; 68%).
 
 * **Custom Vector DB Memory Retrieval System:**
-  * Engineered a local vector indexer and retriever matching student chat messages against past struggle logs using **Cosine Similarity** ($\text{Similarity} \ge 45.0\%$).
+  * Integrates a local vector indexer and retriever matching student chat messages against past struggle logs using **Cosine Similarity** ($\text{Similarity} \ge 45.0\%$).
   * Supports dual-mode embeddings: 768-dimensional dense vectors via the **Gemini Embeddings API** (`text-embedding-004`) when online, and a 34-dimensional local term-frequency bag-of-words vector space model as an offline fallback.
   * Automatically parses unstructured text into structured sentiment metrics: `[Topic, Sentiment: Difficulty, Importance/Stress Multiplier]`.
 
 * **Unsupervised K-Means Student Clustering:**
-  * Implemented the K-Means Clustering algorithm from scratch to segment students into 3 behavioral cohorts: *Theory-Oriented*, *Practice-Oriented*, and *Balanced Multimodal* learners.
-  * Clustered profile metrics across normalized ratios: `[Practice Ratio, Reading Ratio, Video Ratio, Accuracy]`.
-  * Computed a **Cluster Stability Metric** (98.6%) by measuring assignment fluctuations and centroid displacements during model convergence.
+  * Uses K-Means Clustering implemented from scratch to segment students into 3 behavioral cohorts: *Theory-Oriented*, *Practice-Oriented*, and *Balanced Multimodal* learners.
+  * Clusters profile metrics across normalized ratios: `[Practice Ratio, Reading Ratio, Video Ratio, Accuracy]`.
+  * Computes a **Cluster Stability Metric** (98.6%) by measuring assignment fluctuations and centroid displacements during model convergence.
 
 * **STAR Framework NLP Behavioral Dissector:**
-  * Developed a lexical segment parser to analyze behavioral mock interview responses, dissecting candidate text into **Situation, Task, Action, and Result** coverage scores, and providing automated structural coaching feedback.
+  * Analyzes behavioral mock interview responses using a lexical segment parser to dissect candidate text into **Situation, Task, Action, and Result** coverage scores, providing automated structural coaching feedback.
 
 ---
 
