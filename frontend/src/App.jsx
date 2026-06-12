@@ -619,7 +619,7 @@ export default function App() {
                   <div>
                     <h3 style={{ fontSize: '18px', marginBottom: '15px' }}>Peer Cohort Clustering</h3>
                     
-                    {cohortData ? (
+                    {cohortData && !cohortData.error ? (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                         <div style={{ background: 'rgba(189, 0, 255, 0.05)', border: '1px solid rgba(189,0,255,0.15)', borderRadius: '8px', padding: '12px 15px' }}>
                           <div style={{ fontSize: '11px', color: 'var(--accent-purple)', fontWeight: 'bold', letterSpacing: '0.5px' }}>UNSUPERVISED K-MEANS ASSIGNMENT</div>
@@ -653,7 +653,9 @@ export default function App() {
                         </div>
                       </div>
                     ) : (
-                      <div style={{ fontSize: '13px', color: 'var(--text-muted)', textAlign: 'center', padding: '20px' }}>Loading cohort clustering...</div>
+                      <div style={{ fontSize: '13px', color: 'var(--text-muted)', textAlign: 'center', padding: '20px' }}>
+                        {cohortData?.error ? `Model Offline: ${cohortData.error}` : 'Recalculating peer cohorts...'}
+                      </div>
                     )}
                   </div>
 
