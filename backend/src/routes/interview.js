@@ -6,6 +6,21 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const router = express.Router();
+const ML_URL = (() => {
+  let url = process.env.ML_URL || 'http://localhost:5005';
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = `http://${url}`;
+  }
+  try {
+    const urlObj = new URL(url);
+    if (!urlObj.port && (urlObj.hostname === 'careertwin-ml-engine' || urlObj.hostname === 'localhost' || urlObj.hostname === '127.0.0.1')) {
+      url = `${url}:5005`;
+    }
+  } catch (e) {
+    // Fallback if URL parsing fails
+  }
+  return url;
+})();
 
 // Initialize Gemini if key is provided
 let ai = null;
@@ -75,7 +90,7 @@ router.post('/submit', async (req, res) => {
     // 1. Evaluate answer (STAR NLP for behavioral, Gemini AI vs Heuristics for others)
     if (question.questionType === 'behavioral') {
       try {
-        const starResponse = await fetch('http://localhost:5005/analyze_star', {
+        const starResponse = await fetch(`${ML_URL}/analyze_star`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ text: answer })

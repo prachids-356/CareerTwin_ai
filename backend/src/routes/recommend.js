@@ -2,7 +2,21 @@ import express from 'express';
 import db from '../db/database.js';
 
 const router = express.Router();
-const ML_URL = 'http://localhost:5005';
+const ML_URL = (() => {
+  let url = process.env.ML_URL || 'http://localhost:5005';
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = `http://${url}`;
+  }
+  try {
+    const urlObj = new URL(url);
+    if (!urlObj.port && (urlObj.hostname === 'careertwin-ml-engine' || urlObj.hostname === 'localhost' || urlObj.hostname === '127.0.0.1')) {
+      url = `${url}:5005`;
+    }
+  } catch (e) {
+    // Fallback if URL parsing fails
+  }
+  return url;
+})();
 
 // Helper to query the Python ML engine
 async function callMLEngine(endpoint, body) {

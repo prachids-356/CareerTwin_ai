@@ -17,15 +17,11 @@ services:
     buildCommand: "npm install && cd ../frontend && npm install && npm run build"
     startCommand: "npm start"
     rootDir: backend
-    disk:
-      name: careertwin-db-volume
-      mountPath: /opt/careertwin/data
-      sizeGB: 1
     envVars:
       - key: PORT
         value: 5000
       - key: DATA_DIR
-        value: /opt/careertwin/data
+        value: ./data
       - key: ML_URL
         fromService:
           type: web
